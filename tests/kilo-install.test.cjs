@@ -87,9 +87,15 @@ describe('getGlobalDir (Kilo)', () => {
     assert.strictEqual(getGlobalDir('kilo'), path.join(os.homedir(), 'xdg-config', 'kilo'));
   });
 
-  test('ignores KILO_CONFIG file env var and uses XDG/default resolution only', () => {
-    process.env.KILO_CONFIG = '/tmp/ignored-kilo.json';
-    assert.strictEqual(getGlobalDir('kilo'), path.join(os.homedir(), '.config', 'kilo'));
+  test('uses dirname(KILO_CONFIG) when KILO_CONFIG_DIR is unset', () => {
+    process.env.KILO_CONFIG = '~/profiles/work/kilo.jsonc';
+    assert.strictEqual(getGlobalDir('kilo'), path.join(os.homedir(), 'profiles', 'work'));
+  });
+
+  test('KILO_CONFIG_DIR takes precedence over KILO_CONFIG', () => {
+    process.env.KILO_CONFIG_DIR = '~/custom-kilo';
+    process.env.KILO_CONFIG = '~/profiles/work/kilo.jsonc';
+    assert.strictEqual(getGlobalDir('kilo'), path.join(os.homedir(), 'custom-kilo'));
   });
 
   test('explicit config-dir overrides env vars', () => {
@@ -248,10 +254,12 @@ describe('Source code integration (Kilo)', () => {
     assert.ok(updateWorkflowSrc.includes('PREFERRED_CONFIG_DIR'), 'workflow tracks preferred config dir');
     assert.ok(updateWorkflowSrc.includes('kilo.jsonc'), 'workflow infers Kilo from config files');
     assert.ok(updateWorkflowSrc.includes('ENV_RUNTIME_DIRS'), 'workflow checks env-derived config dirs');
+    assert.ok(updateWorkflowSrc.includes('KILO_CONFIG'), 'workflow checks KILO_CONFIG');
   });
 
   test('reapply-patches checks Kilo custom config env vars first', () => {
     assert.ok(reapplyPatchesSrc.includes('KILO_CONFIG_DIR'), 'reapply-patches checks KILO_CONFIG_DIR');
+    assert.ok(reapplyPatchesSrc.includes('KILO_CONFIG'), 'reapply-patches checks KILO_CONFIG');
     assert.ok(reapplyPatchesSrc.includes('XDG_CONFIG_HOME'), 'reapply-patches checks XDG_CONFIG_HOME');
   });
 });

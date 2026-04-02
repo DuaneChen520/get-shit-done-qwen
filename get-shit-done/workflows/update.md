@@ -22,6 +22,8 @@ First, derive `PREFERRED_CONFIG_DIR` and `PREFERRED_RUNTIME` from the invoking p
 Use `PREFERRED_CONFIG_DIR` when available so custom `--config-dir` installs are checked before default locations.
 Use `PREFERRED_RUNTIME` as the first runtime checked so `/gsd:update` targets the runtime that invoked it.
 
+Kilo config precedence must match the installer: `KILO_CONFIG_DIR` -> `dirname(KILO_CONFIG)` -> `XDG_CONFIG_HOME/kilo` -> `~/.config/kilo`.
+
 ```bash
 expand_home() {
   case "$1" in
@@ -59,6 +61,8 @@ if [ -z "$PREFERRED_RUNTIME" ]; then
   elif [ -n "$GEMINI_CONFIG_DIR" ]; then
     PREFERRED_RUNTIME="gemini"
   elif [ -n "$KILO_CONFIG_DIR" ]; then
+    PREFERRED_RUNTIME="kilo"
+  elif [ -n "$KILO_CONFIG" ]; then
     PREFERRED_RUNTIME="kilo"
   elif [ -n "$OPENCODE_CONFIG_DIR" ] || [ -n "$OPENCODE_CONFIG" ]; then
     PREFERRED_RUNTIME="opencode"
@@ -103,6 +107,8 @@ if [ -n "$GEMINI_CONFIG_DIR" ]; then
 fi
 if [ -n "$KILO_CONFIG_DIR" ]; then
   ENV_RUNTIME_DIRS+=( "kilo:$(expand_home "$KILO_CONFIG_DIR")" )
+elif [ -n "$KILO_CONFIG" ]; then
+  ENV_RUNTIME_DIRS+=( "kilo:$(dirname "$(expand_home "$KILO_CONFIG")")" )
 elif [ -n "$XDG_CONFIG_HOME" ]; then
   ENV_RUNTIME_DIRS+=( "kilo:$(expand_home "$XDG_CONFIG_HOME")/kilo" )
 fi
@@ -392,6 +398,8 @@ if [ -n "$GEMINI_CONFIG_DIR" ]; then
 fi
 if [ -n "$KILO_CONFIG_DIR" ]; then
   CACHE_DIRS+=( "$(expand_home "$KILO_CONFIG_DIR")" )
+elif [ -n "$KILO_CONFIG" ]; then
+  CACHE_DIRS+=( "$(dirname "$(expand_home "$KILO_CONFIG")")" )
 elif [ -n "$XDG_CONFIG_HOME" ]; then
   CACHE_DIRS+=( "$(expand_home "$XDG_CONFIG_HOME")/kilo" )
 fi

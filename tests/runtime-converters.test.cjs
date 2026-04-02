@@ -91,6 +91,18 @@ for (const { label, convert, configDir } of flatRuntimeSuites) {
       const frontmatter = result.split('---')[1];
       assert.ok(!frontmatter.includes('tools:'), 'tools: should be stripped for agents');
       assert.ok(!frontmatter.includes('read: true'), 'tools object should not be generated');
+
+      if (label === 'Kilo') {
+        assert.ok(frontmatter.includes('permission:'), 'Kilo agents should emit permission block');
+        assert.ok(frontmatter.includes('read: allow'), 'Read should map to read: allow');
+        assert.ok(frontmatter.includes('edit: allow'), 'Write/Edit should map to edit: allow');
+        assert.ok(frontmatter.includes('bash: allow'), 'Bash should map to bash: allow');
+        assert.ok(frontmatter.includes('grep: allow'), 'Grep should map to grep: allow');
+        assert.ok(frontmatter.includes('glob: allow'), 'Glob should map to glob: allow');
+        assert.ok(frontmatter.includes('task: deny'), 'unspecified permissions should be denied');
+      } else {
+        assert.ok(!frontmatter.includes('permission:'), 'OpenCode agents should not emit permission block');
+      }
     });
 
     test('strips skills: array', () => {
@@ -133,11 +145,21 @@ tools: Read
 ---
 
 Read ~/.claude/agent-memory/ for context.
-Use $HOME/.claude/skills/ for reference.`;
+Use $HOME/.claude/skills/ for reference.
+Check .claude/skills/ and .claude/agents/ locally.
+Use ./.claude/hooks/gsd-statusline.js during local testing.
+Fallback skills live in .agents/skills/.`;
 
       const result = convert(agentWithClaudePaths, { isAgent: true });
       assert.ok(result.includes(`~/${configDir}/agent-memory/`), '~/.claude should be replaced');
       assert.ok(result.includes(`$HOME/${configDir}/skills/`), '$HOME/.claude should be replaced');
+
+      if (label === 'Kilo') {
+        assert.ok(result.includes('.kilo/skills/'), '.claude/skills should be replaced for Kilo');
+        assert.ok(result.includes('.kilo/agents/'), '.claude/agents should be replaced for Kilo');
+        assert.ok(result.includes('./.kilo/hooks/'), './.claude should be replaced for Kilo');
+        assert.ok(result.includes('.kilo/skill/'), '.agents/skills should be rewritten to Kilo skill dir');
+      }
     });
   });
 

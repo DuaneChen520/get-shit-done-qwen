@@ -29,6 +29,11 @@ if [ -n "$KILO_CONFIG_DIR" ]; then
   if [ -d "$candidate" ]; then
     PATCHES_DIR="$candidate"
   fi
+elif [ -n "$KILO_CONFIG" ]; then
+  candidate="$(dirname "$(expand_home "$KILO_CONFIG")")/gsd-local-patches"
+  if [ -d "$candidate" ]; then
+    PATCHES_DIR="$candidate"
+  fi
 elif [ -n "$XDG_CONFIG_HOME" ]; then
   candidate="$(expand_home "$XDG_CONFIG_HOME")/kilo/gsd-local-patches"
   if [ -d "$candidate" ]; then

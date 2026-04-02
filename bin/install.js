@@ -196,7 +196,7 @@ function getOpencodeGlobalDir() {
 /**
  * Get the global config directory for Kilo
  * Kilo follows XDG Base Directory spec and uses ~/.config/kilo/
- * Priority: KILO_CONFIG_DIR > XDG_CONFIG_HOME/kilo > ~/.config/kilo
+ * Priority: KILO_CONFIG_DIR > dirname(KILO_CONFIG) > XDG_CONFIG_HOME/kilo > ~/.config/kilo
  */
 function getKiloGlobalDir() {
   // 1. Explicit KILO_CONFIG_DIR env var
@@ -204,12 +204,17 @@ function getKiloGlobalDir() {
     return expandTilde(process.env.KILO_CONFIG_DIR);
   }
 
-  // 2. XDG_CONFIG_HOME/kilo
+  // 2. KILO_CONFIG env var (use its directory)
+  if (process.env.KILO_CONFIG) {
+    return path.dirname(expandTilde(process.env.KILO_CONFIG));
+  }
+
+  // 3. XDG_CONFIG_HOME/kilo
   if (process.env.XDG_CONFIG_HOME) {
     return path.join(expandTilde(process.env.XDG_CONFIG_HOME), 'kilo');
   }
 
-  // 3. Default: ~/.config/kilo (XDG default)
+  // 4. Default: ~/.config/kilo (XDG default)
   return path.join(os.homedir(), '.config', 'kilo');
 }
 
@@ -600,6 +605,72 @@ function convertGeminiToolName(claudeTool) {
   }
   // Default: lowercase
   return claudeTool.toLowerCase();
+}
+
+const claudeToKiloAgentPermissions = {
+  Read: 'read',
+  Write: 'edit',
+  Edit: 'edit',
+  Bash: 'bash',
+  Grep: 'grep',
+  Glob: 'glob',
+  Task: 'task',
+  WebFetch: 'webfetch',
+  WebSearch: 'websearch',
+  TodoWrite: 'todowrite',
+  AskUserQuestion: 'question',
+  SlashCommand: 'skill',
+};
+
+const kiloAgentPermissionOrder = [
+  'read',
+  'edit',
+  'bash',
+  'grep',
+  'glob',
+  'task',
+  'webfetch',
+  'websearch',
+  'skill',
+  'question',
+  'todowrite',
+  'list',
+  'codesearch',
+  'lsp',
+];
+
+function convertClaudeToKiloPermissionTool(claudeTool) {
+  return claudeToKiloAgentPermissions[claudeTool] || null;
+}
+
+function buildKiloAgentPermissionBlock(claudeTools) {
+  const allowedPermissions = new Set();
+
+  for (const tool of claudeTools) {
+    const mapped = convertClaudeToKiloPermissionTool(tool);
+    if (mapped) {
+      allowedPermissions.add(mapped);
+    }
+  }
+
+  const lines = ['permission:'];
+  for (const permission of kiloAgentPermissionOrder) {
+    lines.push(`  ${permission}: ${allowedPermissions.has(permission) ? 'allow' : 'deny'}`);
+  }
+
+  return lines;
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function replaceRelativePathReference(content, fromPath, toPath) {
+  const escapedPath = escapeRegExp(fromPath);
+  return content.replace(
+    new RegExp(`(^|[^A-Za-z0-9_./-])${escapedPath}`, 'g'),
+    (_, prefix) => `${prefix}${toPath}`,
+  );
 }
 
 /**
@@ -2721,6 +2792,10 @@ function convertClaudeToKiloFrontmatter(content, { isAgent = false } = {}) {
   // Replace ~/.claude and $HOME/.claude with Kilo's config location
   convertedContent = convertedContent.replace(/~\/\.claude\b/g, '~/.config/kilo');
   convertedContent = convertedContent.replace(/\$HOME\/\.claude\b/g, '$HOME/.config/kilo');
+  convertedContent = convertedContent.replace(/\.\/\.claude\//g, './.kilo/');
+  convertedContent = replaceRelativePathReference(convertedContent, '.claude/skills/', '.kilo/skills/');
+  convertedContent = replaceRelativePathReference(convertedContent, '.agents/skills/', '.kilo/skill/');
+  convertedContent = replaceRelativePathReference(convertedContent, '.claude/agents/', '.kilo/agents/');
   // Replace general-purpose subagent type with Kilo's equivalent "general"
   convertedContent = convertedContent.replace(/subagent_type="general-purpose"/g, 'subagent_type="general"');
   // Runtime-neutral agent name replacement (#766)
@@ -2744,8 +2819,10 @@ function convertClaudeToKiloFrontmatter(content, { isAgent = false } = {}) {
   const lines = frontmatter.split('\n');
   const newLines = [];
   let inAllowedTools = false;
+  let inAgentTools = false;
   let inSkippedArray = false;
   const allowedTools = [];
+  const agentTools = [];
 
   for (const line of lines) {
     const trimmed = line.trim();
@@ -2761,11 +2838,26 @@ function convertClaudeToKiloFrontmatter(content, { isAgent = false } = {}) {
       continue;
     }
 
+    if (isAgent && inAgentTools) {
+      if (trimmed.startsWith('- ')) {
+        agentTools.push(trimmed.substring(2).trim());
+        continue;
+      }
+      if (trimmed && !trimmed.startsWith('-')) {
+        inAgentTools = false;
+      }
+    }
+
     // Detect inline tools: field (comma-separated string)
     if (trimmed.startsWith('tools:')) {
       if (isAgent) {
-        // Agents: strip tools entirely (not supported in Kilo agent frontmatter)
-        inSkippedArray = true;
+        const toolsValue = trimmed.substring(6).trim();
+        if (toolsValue) {
+          const tools = toolsValue.split(',').map(t => t.trim()).filter(t => t);
+          agentTools.push(...tools);
+        } else {
+          inAgentTools = true;
+        }
         continue;
       }
       const toolsValue = trimmed.substring(6).trim();
@@ -2825,7 +2917,12 @@ function convertClaudeToKiloFrontmatter(content, { isAgent = false } = {}) {
     // Collect allowed-tools items
     if (inAllowedTools) {
       if (trimmed.startsWith('- ')) {
-        allowedTools.push(trimmed.substring(2).trim());
+        const tool = trimmed.substring(2).trim();
+        if (isAgent) {
+          agentTools.push(tool);
+        } else {
+          allowedTools.push(tool);
+        }
         continue;
       } else if (trimmed && !trimmed.startsWith('-')) {
         // End of array, new field started
@@ -2842,6 +2939,7 @@ function convertClaudeToKiloFrontmatter(content, { isAgent = false } = {}) {
   // For agents: add required Kilo agent fields
   if (isAgent) {
     newLines.push('mode: subagent');
+    newLines.push(...buildKiloAgentPermissionBlock(agentTools));
   }
 
   // For commands: add tools object if we had allowed-tools or tools
