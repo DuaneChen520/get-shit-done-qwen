@@ -49,14 +49,19 @@ npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-q
 ### 一键安装（全局）
 
 ```bash
-npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --global && rm -rf gsd-qwen-temp
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --global
 ```
 
 ### 一键安装（本地，当前项目）
 
 ```bash
-npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --local && rm -rf gsd-qwen-temp
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --local
 ```
+
+> [!NOTE]
+> 安装后请手动清理临时文件夹：
+> - **Windows：** `Remove-Item -Recurse -Force gsd-qwen-temp`（PowerShell）或 `rmdir /s /q gsd-qwen-temp`（cmd）
+> - **Mac/Linux：** `rm -rf gsd-qwen-temp`
 
 ### 手动安装
 

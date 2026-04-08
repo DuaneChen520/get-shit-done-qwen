@@ -49,14 +49,19 @@ This is a **fork of GSD v1.34.2**, adapted for Qwen Code CLI. It includes:
 ### One-Line Install (Global)
 
 ```bash
-npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --global && rm -rf gsd-qwen-temp
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --global
 ```
 
 ### One-Line Install (Local, Current Project)
 
 ```bash
-npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --local && rm -rf gsd-qwen-temp
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --local
 ```
+
+> [!NOTE]
+> After installation, clean up the temp folder manually:
+> - **Windows:** `Remove-Item -Recurse -Force gsd-qwen-temp` (PowerShell) or `rmdir /s /q gsd-qwen-temp` (cmd)
+> - **Mac/Linux:** `rm -rf gsd-qwen-temp`
 
 ### Manual Install
 
