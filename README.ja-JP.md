@@ -4,7 +4,7 @@
 
 [English](README.md) · [Português](README.pt-BR.md) · [简体中文](README.zh-CN.md) · **日本語**
 
-**Claude Code、OpenCode、Gemini CLI、Kilo、Codex、Copilot、Cursor、Windsurf、Antigravity、Augment、Trae、Cline向けの軽量かつ強力なメタプロンプティング、コンテキストエンジニアリング、仕様駆動開発システム。**
+**Claude Code、OpenCode、Gemini CLI、Kilo、Codex、Copilot、Cursor、Windsurf、Antigravity、Augment、Trae、Cline、Qwen Code向けの軽量かつ強力なメタプロンプティング、コンテキストエンジニアリング、仕様駆動開発システム。**
 
 **コンテキストロット（Claudeがコンテキストウィンドウを消費するにつれ品質が劣化する現象）を解決します。**
 
@@ -94,17 +94,17 @@ npx get-shit-done-cc@latest
 ```
 
 インストーラーが以下の選択を求めます：
-1. **ランタイム** — Claude Code、OpenCode、Gemini、Kilo、Codex、Copilot、Cursor、Windsurf、Antigravity、Augment、Trae、Cline、またはすべて（インタラクティブ複数選択 — 1回のインストールセッションで複数のランタイムを選択可能）
+1. **ランタイム** — Claude Code、OpenCode、Gemini、Kilo、Codex、Copilot、Cursor、Windsurf、Antigravity、Augment、Trae、Cline、Qwen Code、またはすべて（インタラクティブ複数選択 — 1回のインストールセッションで複数のランタイムを選択可能）
 2. **インストール先** — グローバル（全プロジェクト）またはローカル（現在のプロジェクトのみ）
 
 確認方法：
-- Claude Code / Gemini / Copilot / Antigravity: `/gsd-help`
+- Claude Code / Gemini / Copilot / Antigravity / Qwen Code: `/gsd-help`
 - OpenCode / Kilo / Augment / Trae: `/gsd-help`
 - Codex: `$gsd-help`
 - Cline: GSDは`.clinerules`経由でインストール — `.clinerules`の存在を確認
 
 > [!NOTE]
-> Claude Code 2.1.88+とCodexはスキル（`skills/gsd-*/SKILL.md`）としてインストールされます。Clineは`.clinerules`を使用します。インストーラーがすべての形式を自動的に処理します。
+> Claude Code 2.1.88+とCodexはスキル（`skills/gsd-*/SKILL.md`）としてインストールされます。Clineは`.clinerules`を使用します。Qwen Codeは`commands/gsd/`と`agents/`を`~/.qwen/`にインストールします。インストーラーがすべての形式を自動的に処理します。
 
 > [!TIP]
 > ソースベースのインストールやnpmが利用できない環境については、**[docs/manual-update.md](docs/manual-update.md)**を参照してください。
@@ -163,12 +163,16 @@ npx get-shit-done-cc --trae --local         # ./.trae/ にインストール
 npx get-shit-done-cc --cline --global       # ~/.cline/ にインストール
 npx get-shit-done-cc --cline --local        # ./.clinerules にインストール
 
+# Qwen Code
+npx get-shit-done-cc --qwen --global        # ~/.qwen/ にインストール
+npx get-shit-done-cc --qwen --local         # ./.qwen/ にインストール
+
 # 全ランタイム
 npx get-shit-done-cc --all --global      # すべてのディレクトリにインストール
 ```
 
 `--global`（`-g`）または `--local`（`-l`）でインストール先の質問をスキップできます。
-`--claude`、`--opencode`、`--gemini`、`--kilo`、`--codex`、`--copilot`、`--cursor`、`--windsurf`、`--antigravity`、`--augment`、`--trae`、`--cline`、または `--all` でランタイムの質問をスキップできます。
+`--claude`、`--opencode`、`--gemini`、`--kilo`、`--codex`、`--copilot`、`--cursor`、`--windsurf`、`--antigravity`、`--augment`、`--trae`、`--cline`、`--qwen`、または `--all` でランタイムの質問をスキップできます。
 
 </details>
 

@@ -4,7 +4,7 @@
 
 [English](README.md) · **Português** · [简体中文](README.zh-CN.md) · [日本語](README.ja-JP.md)
 
-**Um sistema leve e poderoso de meta-prompting, engenharia de contexto e desenvolvimento orientado a especificação para Claude Code, OpenCode, Gemini CLI, Kilo, Codex, Copilot, Cursor, Windsurf, Antigravity, Augment, Trae e Cline.**
+**Um sistema leve e poderoso de meta-prompting, engenharia de contexto e desenvolvimento orientado a especificação para Claude Code, OpenCode, Gemini CLI, Kilo, Codex, Copilot, Cursor, Windsurf, Antigravity, Augment, Trae, Cline e Qwen Code.**
 
 **Resolve context rot — a degradação de qualidade que acontece conforme o Claude enche a janela de contexto.**
 
@@ -73,15 +73,13 @@ Para quem quer descrever o que precisa e receber isso construído do jeito certo
 
 Quality gates embutidos capturam problemas reais: detecção de schema drift sinaliza mudanças ORM sem migrations, segurança ancora verificação a modelos de ameaça, e detecção de redução de escopo impede o planner de descartar requisitos silenciosamente.
 
-### Destaques v1.32.0
+### Destaques v1.34.0
 
-- **Gates de consistência STATE.md** — `state validate` detecta divergência entre STATE.md e o filesystem; `state sync` reconstrói a partir do estado real do projeto
-- **Flag `--to N`** — Para a execução autônoma após completar uma fase específica
-- **Research gate** — Bloqueia planejamento quando RESEARCH.md tem perguntas abertas não resolvidas
-- **Filtro de escopo do verificador** — Lacunas abordadas em fases posteriores são marcadas como "adiadas", não como lacunas
-- **Guard de leitura antes de edição** — Hook consultivo previne loops de retry infinitos em runtimes não-Claude
-- **Redução de contexto** — Truncamento de Markdown e ordenação de prompts cache-friendly para menor uso de tokens
-- **4 novos runtimes** — Trae, Kilo, Augment e Cline (12 runtimes no total)
+- **Gates taxonomy** — 4 tipos canônicos de gates (pre-flight, revision, escalation, abort) integrados aos agentes de verificação de plano e verificador
+- **Correção de shell hooks** — Arquivos `hooks/*.sh` agora estão corretamente incluídos no pacote npm, eliminando erros de hook em instalações limpas
+- **Verificação de hunk pós-merge** — `reapply-patches` detecta hunks silenciosamente removidos após merge three-way
+- **Correção detectConfigDir** — Usuários Claude Code não veem mais falsos avisos de "atualização disponível" com múltiplos runtimes instalados
+- **3 correções de bugs** — Preservação de backlog de milestone, prioridade detectConfigDir e manifesto do pacote npm
 
 ---
 
@@ -92,17 +90,17 @@ npx get-shit-done-cc@latest
 ```
 
 O instalador pede:
-1. **Runtime** — Claude Code, OpenCode, Gemini, Kilo, Codex, Copilot, Cursor, Windsurf, Antigravity, Augment, Trae, Cline, ou todos
+1. **Runtime** — Claude Code, OpenCode, Gemini, Kilo, Codex, Copilot, Cursor, Windsurf, Antigravity, Augment, Trae, Cline, Qwen Code, ou todos (multi-select interativo — escolha múltiplos runtimes em uma única sessão de instalação)
 2. **Local** — Global (todos os projetos) ou local (apenas projeto atual)
 
 Verifique com:
-- Claude Code / Gemini / Copilot / Antigravity: `/gsd-help`
+- Claude Code / Gemini / Copilot / Antigravity / Qwen Code: `/gsd-help`
 - OpenCode / Kilo / Augment / Trae: `/gsd-help`
 - Codex: `$gsd-help`
 - Cline: GSD instala via `.clinerules` — verifique se `.clinerules` existe
 
 > [!NOTE]
-> Claude Code 2.1.88+ e Codex instalam como skills (`skills/gsd-*/SKILL.md`). Cline usa `.clinerules`. O instalador lida com todos os formatos automaticamente.
+> Claude Code 2.1.88+ e Codex instalam como skills (`skills/gsd-*/SKILL.md`). Versões mais antigas do Claude Code usam `commands/gsd/`. Cline usa `.clinerules` para configuração. Qwen Code usa `commands/gsd/` e `agents/` em `~/.qwen/`. O instalador lida com todos os formatos automaticamente.
 
 > [!TIP]
 > Para instalação a partir do código-fonte ou ambientes sem npm, consulte **[docs/manual-update.md](docs/manual-update.md)**.
@@ -159,12 +157,16 @@ npx get-shit-done-cc --trae --local         # Install to ./.trae/
 npx get-shit-done-cc --cline --global       # Install to ~/.cline/
 npx get-shit-done-cc --cline --local        # Install to ./.clinerules
 
+# Qwen Code
+npx get-shit-done-cc --qwen --global        # Install to ~/.qwen/
+npx get-shit-done-cc --qwen --local         # Install to ./.qwen/
+
 # Todos
 npx get-shit-done-cc --all --global
 ```
 
 Use `--global` (`-g`) ou `--local` (`-l`) para pular a pergunta de local.
-Use `--claude`, `--opencode`, `--gemini`, `--kilo`, `--codex`, `--copilot`, `--cursor`, `--windsurf`, `--antigravity`, `--augment`, `--trae`, `--cline` ou `--all` para pular a pergunta de runtime.
+Use `--claude`, `--opencode`, `--gemini`, `--kilo`, `--codex`, `--copilot`, `--cursor`, `--windsurf`, `--antigravity`, `--augment`, `--trae`, `--cline`, `--qwen` ou `--all` para pular a pergunta de runtime.
 
 </details>
 
@@ -437,6 +439,7 @@ npx get-shit-done-cc --antigravity --global --uninstall
 npx get-shit-done-cc --augment --global --uninstall
 npx get-shit-done-cc --trae --global --uninstall
 npx get-shit-done-cc --cline --global --uninstall
+npx get-shit-done-cc --qwen --global --uninstall
 
 # Instalações locais (projeto atual)
 npx get-shit-done-cc --claude --local --uninstall
@@ -450,6 +453,7 @@ npx get-shit-done-cc --antigravity --local --uninstall
 npx get-shit-done-cc --augment --local --uninstall
 npx get-shit-done-cc --trae --local --uninstall
 npx get-shit-done-cc --cline --local --uninstall
+npx get-shit-done-cc --qwen --local --uninstall
 ```
 
 ---

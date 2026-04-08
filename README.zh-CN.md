@@ -4,7 +4,7 @@
 
 [English](README.md) · [Português](README.pt-BR.md) · **简体中文** · [日本語](README.ja-JP.md) · [한국어](README.ko-KR.md)
 
-**一个轻量但强大的元提示、上下文工程与规格驱动开发系统，适用于 Claude Code、OpenCode、Gemini CLI、Kilo、Codex、Copilot、Cursor、Windsurf、Antigravity、Augment、Trae 和 Cline。**
+**一个轻量但强大的元提示、上下文工程与规格驱动开发系统，适用于 Claude Code、OpenCode、Gemini CLI、Kilo、Codex、Copilot、Cursor、Windsurf、Antigravity、Augment、Trae、Cline 和 Qwen Code。**
 
 **它解决的是 context rot：随着 Claude 的上下文窗口被填满，输出质量逐步劣化的问题。**
 
@@ -92,17 +92,17 @@ npx get-shit-done-cc@latest
 ```
 
 安装器会提示你选择：
-1. **运行时**：Claude Code、OpenCode、Gemini、Kilo、Codex、Copilot、Cursor、Windsurf、Antigravity、Augment、Trae、Cline，或全部
+1. **运行时**：Claude Code、OpenCode、Gemini、Kilo、Codex、Copilot、Cursor、Windsurf、Antigravity、Augment、Trae、Cline、Qwen Code，或全部
 2. **安装位置**：全局（所有项目）或本地（仅当前项目）
 
 安装后可这样验证：
-- Claude Code / Gemini / Copilot / Antigravity：`/gsd-help`
+- Claude Code / Gemini / Copilot / Antigravity / Qwen Code：`/gsd-help`
 - OpenCode / Kilo / Augment / Trae：`/gsd-help`
 - Codex：`$gsd-help`
 - Cline：GSD 通过 `.clinerules` 安装 — 检查 `.clinerules` 是否存在
 
 > [!NOTE]
-> Claude Code 2.1.88+ 和 Codex 以 skill 形式安装（`skills/gsd-*/SKILL.md`）。Cline 使用 `.clinerules`。安装器会自动处理所有格式。
+> Claude Code 2.1.88+ 和 Codex 以 skill 形式安装（`skills/gsd-*/SKILL.md`）。Cline 使用 `.clinerules`。Qwen Code 使用 `~/.qwen/` 下的 `commands/gsd/` 和 `agents/`。安装器会自动处理所有格式。
 
 > [!TIP]
 > 基于源码安装或无法使用 npm 的环境，请参阅 **[docs/manual-update.md](docs/manual-update.md)**。
@@ -161,12 +161,16 @@ npx get-shit-done-cc --trae --local      # 安装到 ./.trae/
 npx get-shit-done-cc --cline --global       # 安装到 ~/.cline/
 npx get-shit-done-cc --cline --local        # 安装到 ./.clinerules
 
+# Qwen Code
+npx get-shit-done-cc --qwen --global        # 安装到 ~/.qwen/
+npx get-shit-done-cc --qwen --local         # 安装到 ./.qwen/
+
 # 所有运行时
 npx get-shit-done-cc --all --global      # 安装到所有目录
 ```
 
 使用 `--global`（`-g`）或 `--local`（`-l`）可以跳过安装位置提示。
-使用 `--claude`、`--opencode`、`--gemini`、`--kilo`、`--codex`、`--copilot`、`--cursor`、`--windsurf`、`--antigravity`、`--augment`、`--trae`、`--cline` 或 `--all` 可以跳过运行时提示。
+使用 `--claude`、`--opencode`、`--gemini`、`--kilo`、`--codex`、`--copilot`、`--cursor`、`--windsurf`、`--antigravity`、`--augment`、`--trae`、`--cline`、`--qwen` 或 `--all` 可以跳过运行时提示。
 
 </details>
 

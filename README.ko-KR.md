@@ -4,7 +4,7 @@
 
 [English](README.md) · [Português](README.pt-BR.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja-JP.md) · **한국어**
 
-**Claude Code, OpenCode, Gemini CLI, Kilo, Codex, Copilot, Cursor, Windsurf, Antigravity, Augment, Trae, Cline을 위한 가볍고 강력한 메타 프롬프팅, 컨텍스트 엔지니어링, 스펙 기반 개발 시스템.**
+**Claude Code, OpenCode, Gemini CLI, Kilo, Codex, Copilot, Cursor, Windsurf, Antigravity, Augment, Trae, Cline, Qwen Code을 위한 가볍고 강력한 메타 프롬프팅, 컨텍스트 엔지니어링, 스펙 기반 개발 시스템.**
 
 **컨텍스트 rot를 해결합니다 — Claude의 컨텍스트 창이 채워질수록 품질이 저하되는 문제.**
 
@@ -94,17 +94,17 @@ npx get-shit-done-cc@latest
 ```
 
 설치 중에 다음을 선택합니다:
-1. **런타임** — Claude Code, OpenCode, Gemini, Kilo, Codex, Copilot, Cursor, Windsurf, Antigravity, Augment, Trae, Cline, 또는 전체 (대화형 다중 선택 — 한 번에 여러 런타임 선택 가능)
+1. **런타임** — Claude Code, OpenCode, Gemini, Kilo, Codex, Copilot, Cursor, Windsurf, Antigravity, Augment, Trae, Cline, Qwen Code, 또는 전체 (대화형 다중 선택 — 한 번에 여러 런타임 선택 가능)
 2. **위치** — 전역 (모든 프로젝트) 또는 로컬 (현재 프로젝트만)
 
 설치가 됐는지 확인하려면:
-- Claude Code / Gemini / Copilot / Antigravity: `/gsd-help`
+- Claude Code / Gemini / Copilot / Antigravity / Qwen Code: `/gsd-help`
 - OpenCode / Kilo / Augment / Trae: `/gsd-help`
 - Codex: `$gsd-help`
 - Cline: GSD는 `.clinerules`를 통해 설치 — `.clinerules` 존재 여부 확인
 
 > [!NOTE]
-> Claude Code 2.1.88+와 Codex는 스킬(`skills/gsd-*/SKILL.md`)로 설치됩니다. Cline은 `.clinerules`를 사용합니다. 설치 프로그램이 모든 형식을 자동으로 처리합니다.
+> Claude Code 2.1.88+와 Codex는 스킬(`skills/gsd-*/SKILL.md`)로 설치됩니다. Cline은 `.clinerules`를 사용합니다. Qwen Code는 `~/.qwen/`의 `commands/gsd/`와 `agents/`를 사용합니다. 설치 프로그램이 모든 형식을 자동으로 처리합니다.
 
 > [!TIP]
 > 소스 기반 설치 또는 npm을 사용할 수 없는 환경은 **[docs/manual-update.md](docs/manual-update.md)**를 참조하세요.
@@ -163,12 +163,16 @@ npx get-shit-done-cc --trae --local         # ./.trae/에 설치
 npx get-shit-done-cc --cline --global       # ~/.cline/에 설치
 npx get-shit-done-cc --cline --local        # ./.clinerules에 설치
 
+# Qwen Code
+npx get-shit-done-cc --qwen --global        # ~/.qwen/에 설치
+npx get-shit-done-cc --qwen --local         # ./.qwen/에 설치
+
 # 전체 런타임
 npx get-shit-done-cc --all --global      # 모든 디렉터리에 설치
 ```
 
 위치 프롬프트 건너뛰기: `--global` (`-g`) 또는 `--local` (`-l`).
-런타임 프롬프트 건너뛰기: `--claude`, `--opencode`, `--gemini`, `--kilo`, `--codex`, `--copilot`, `--cursor`, `--windsurf`, `--antigravity`, `--augment`, `--trae`, `--cline`, 또는 `--all`.
+런타임 프롬프트 건너뛰기: `--claude`, `--opencode`, `--gemini`, `--kilo`, `--codex`, `--copilot`, `--cursor`, `--windsurf`, `--antigravity`, `--augment`, `--trae`, `--cline`, `--qwen`, 또는 `--all`.
 
 </details>
 
@@ -804,6 +808,7 @@ npx get-shit-done-cc --copilot --global --uninstall
 npx get-shit-done-cc --cursor --global --uninstall
 npx get-shit-done-cc --antigravity --global --uninstall
 npx get-shit-done-cc --trae --global --uninstall
+npx get-shit-done-cc --qwen --global --uninstall
 
 # 로컬 설치 (현재 프로젝트)
 npx get-shit-done-cc --claude --local --uninstall
@@ -815,6 +820,7 @@ npx get-shit-done-cc --copilot --local --uninstall
 npx get-shit-done-cc --cursor --local --uninstall
 npx get-shit-done-cc --antigravity --local --uninstall
 npx get-shit-done-cc --trae --local --uninstall
+npx get-shit-done-cc --qwen --local --uninstall
 ```
 
 다른 설정은 그대로 유지하면서 GSD의 모든 명령어, 에이전트, 훅, 설정을 제거합니다.
