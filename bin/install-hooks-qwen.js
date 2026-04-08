@@ -100,9 +100,10 @@ function buildHookConfig(hookFile, hookName, type = 'command') {
 }
 
 /**
- * Get recommended hooks configuration
+ * Get hooks configuration - mirrors original GSD hooks setup
+ * Configures ALL hooks by default (matching original Claude Code behavior)
  */
-function getHooksConfig(mode = 'recommended') {
+function getHooksConfig(mode = 'all') {
   const hooks = {
     PreToolUse: [],
     PostToolUse: [],
@@ -136,15 +137,15 @@ function getHooksConfig(mode = 'recommended') {
   }
 
   if (mode === 'all') {
-    // Optional hooks
+    // All hooks (matching original GSD Claude Code setup)
     hooks.PreToolUse.push({
       matcher: "Bash",
       hooks: [buildHookConfig('gsd-validate-commit.sh', 'gsd-validate-commit')]
     });
 
     hooks.SessionStart.push(
-      buildHookConfig('gsd-session-state.sh', 'gsd-session-state'),
-      buildHookConfig('gsd-check-update.js', 'gsd-check-update')
+      { hooks: [buildHookConfig('gsd-session-state.sh', 'gsd-session-state')] },
+      { hooks: [buildHookConfig('gsd-check-update.js', 'gsd-check-update')] }
     );
 
     hooks.PostToolUse.push({
@@ -322,6 +323,7 @@ function uninstall(isGlobal) {
 if (hasUninstall) {
   uninstall(hasGlobal);
 } else {
-  const mode = hasAll ? 'all' : hasMinimal ? 'minimal' : 'recommended';
+  // Default to 'all' to match original GSD hooks configuration
+  const mode = hasAll ? 'all' : hasMinimal ? 'minimal' : 'all';
   install(hasGlobal || hasLocal ? hasGlobal : true, mode);
 }
