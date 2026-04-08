@@ -163,16 +163,35 @@ npx get-shit-done-cc --trae --local         # ./.trae/ にインストール
 npx get-shit-done-cc --cline --global       # ~/.cline/ にインストール
 npx get-shit-done-cc --cline --local        # ./.clinerules にインストール
 
-# Qwen Code
-npx get-shit-done-cc --qwen --global        # ~/.qwen/ にインストール
-npx get-shit-done-cc --qwen --local         # ./.qwen/ にインストール
-
 # 全ランタイム
 npx get-shit-done-cc --all --global      # すべてのディレクトリにインストール
 ```
 
 `--global`（`-g`）または `--local`（`-l`）でインストール先の質問をスキップできます。
-`--claude`、`--opencode`、`--gemini`、`--kilo`、`--codex`、`--copilot`、`--cursor`、`--windsurf`、`--antigravity`、`--augment`、`--trae`、`--cline`、`--qwen`、または `--all` でランタイムの質問をスキップできます。
+`--claude`、`--opencode`、`--gemini`、`--kilo`、`--codex`、`--copilot`、`--cursor`、`--windsurf`、`--antigravity`、`--augment`、`--trae`、`--cline`、または `--all` でランタイムの質問をスキップできます。
+
+</details>
+
+<details>
+<summary><strong>Qwen Code のインストール</strong></summary>
+
+Qwen Code の場合は、fork されたリポジトリから直接インストールします：
+
+```bash
+# ワンラインインストール（グローバル）
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --global && rm -rf gsd-qwen-temp
+
+# ワンラインインストール（ローカル、現在のプロジェクト）
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --local && rm -rf gsd-qwen-temp
+
+# または手動で git clone
+git clone --depth 1 https://github.com/DuaneChen520/get-shit-done-qwen.git
+cd get-shit-done-qwen
+node bin/install-qwen-unified.js --global  # または --local
+```
+
+> [!NOTE]
+> Qwen Code バージョンは `github.com/DuaneChen520/get-shit-done-qwen` で fork としてメンテナンスされています。個別の npm パッケージとしてはまだ公開されていません。
 
 </details>
 

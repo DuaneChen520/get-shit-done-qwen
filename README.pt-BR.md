@@ -157,16 +157,35 @@ npx get-shit-done-cc --trae --local         # Install to ./.trae/
 npx get-shit-done-cc --cline --global       # Install to ~/.cline/
 npx get-shit-done-cc --cline --local        # Install to ./.clinerules
 
-# Qwen Code
-npx get-shit-done-cc --qwen --global        # Install to ~/.qwen/
-npx get-shit-done-cc --qwen --local         # Install to ./.qwen/
-
 # Todos
 npx get-shit-done-cc --all --global
 ```
 
 Use `--global` (`-g`) ou `--local` (`-l`) para pular a pergunta de local.
-Use `--claude`, `--opencode`, `--gemini`, `--kilo`, `--codex`, `--copilot`, `--cursor`, `--windsurf`, `--antigravity`, `--augment`, `--trae`, `--cline`, `--qwen` ou `--all` para pular a pergunta de runtime.
+Use `--claude`, `--opencode`, `--gemini`, `--kilo`, `--codex`, `--copilot`, `--cursor`, `--windsurf`, `--antigravity`, `--augment`, `--trae`, `--cline` ou `--all` para pular a pergunta de runtime.
+
+</details>
+
+<details>
+<summary><strong>Instalação do Qwen Code</strong></summary>
+
+Para o Qwen Code, instale diretamente do repositório forkado:
+
+```bash
+# Instalação em uma linha (global)
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --global && rm -rf gsd-qwen-temp
+
+# Instalação em uma linha (local, projeto atual)
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --local && rm -rf gsd-qwen-temp
+
+# Ou manualmente com git clone
+git clone --depth 1 https://github.com/DuaneChen520/get-shit-done-qwen.git
+cd get-shit-done-qwen
+node bin/install-qwen-unified.js --global  # ou --local
+```
+
+> [!NOTE]
+> A versão Qwen Code é mantida como fork em `github.com/DuaneChen520/get-shit-done-qwen`. Ainda não foi publicada como pacote npm separado.
 
 </details>
 
@@ -439,7 +458,6 @@ npx get-shit-done-cc --antigravity --global --uninstall
 npx get-shit-done-cc --augment --global --uninstall
 npx get-shit-done-cc --trae --global --uninstall
 npx get-shit-done-cc --cline --global --uninstall
-npx get-shit-done-cc --qwen --global --uninstall
 
 # Instalações locais (projeto atual)
 npx get-shit-done-cc --claude --local --uninstall
@@ -453,7 +471,6 @@ npx get-shit-done-cc --antigravity --local --uninstall
 npx get-shit-done-cc --augment --local --uninstall
 npx get-shit-done-cc --trae --local --uninstall
 npx get-shit-done-cc --cline --local --uninstall
-npx get-shit-done-cc --qwen --local --uninstall
 ```
 
 ---

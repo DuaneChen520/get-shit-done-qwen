@@ -179,17 +179,36 @@ npx get-shit-done-cc --trae --local         # Install to ./.trae/
 npx get-shit-done-cc --cline --global       # Install to ~/.cline/
 npx get-shit-done-cc --cline --local        # Install to ./.clinerules
 
-# Qwen Code
-npx get-shit-done-cc --qwen --global        # Install to ~/.qwen/
-npx get-shit-done-cc --qwen --local         # Install to ./.qwen/
-
 # All runtimes
 npx get-shit-done-cc --all --global      # Install to all directories
 ```
 
 Use `--global` (`-g`) or `--local` (`-l`) to skip the location prompt.
-Use `--claude`, `--opencode`, `--gemini`, `--kilo`, `--codex`, `--copilot`, `--cursor`, `--windsurf`, `--antigravity`, `--augment`, `--trae`, `--cline`, `--qwen`, or `--all` to skip the runtime prompt.
+Use `--claude`, `--opencode`, `--gemini`, `--kilo`, `--codex`, `--copilot`, `--cursor`, `--windsurf`, `--antigravity`, `--augment`, `--trae`, `--cline`, or `--all` to skip the runtime prompt.
 Use `--sdk` to also install the GSD SDK CLI (`gsd-sdk`) for headless autonomous execution.
+
+</details>
+
+<details>
+<summary><strong>Qwen Code Installation</strong></summary>
+
+For Qwen Code, install directly from the forked repository:
+
+```bash
+# One-line install (global)
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --global && rm -rf gsd-qwen-temp
+
+# One-line install (local, current project)
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --local && rm -rf gsd-qwen-temp
+
+# Or manually with git clone
+git clone --depth 1 https://github.com/DuaneChen520/get-shit-done-qwen.git
+cd get-shit-done-qwen
+node bin/install-qwen-unified.js --global  # or --local
+```
+
+> [!NOTE]
+> The Qwen Code version is maintained as a fork at `github.com/DuaneChen520/get-shit-done-qwen`. It is not yet published as a separate npm package.
 
 </details>
 

@@ -161,16 +161,35 @@ npx get-shit-done-cc --trae --local      # 安装到 ./.trae/
 npx get-shit-done-cc --cline --global       # 安装到 ~/.cline/
 npx get-shit-done-cc --cline --local        # 安装到 ./.clinerules
 
-# Qwen Code
-npx get-shit-done-cc --qwen --global        # 安装到 ~/.qwen/
-npx get-shit-done-cc --qwen --local         # 安装到 ./.qwen/
-
 # 所有运行时
 npx get-shit-done-cc --all --global      # 安装到所有目录
 ```
 
 使用 `--global`（`-g`）或 `--local`（`-l`）可以跳过安装位置提示。
-使用 `--claude`、`--opencode`、`--gemini`、`--kilo`、`--codex`、`--copilot`、`--cursor`、`--windsurf`、`--antigravity`、`--augment`、`--trae`、`--cline`、`--qwen` 或 `--all` 可以跳过运行时提示。
+使用 `--claude`、`--opencode`、`--gemini`、`--kilo`、`--codex`、`--copilot`、`--cursor`、`--windsurf`、`--antigravity`、`--augment`、`--trae`、`--cline` 或 `--all` 可以跳过运行时提示。
+
+</details>
+
+<details>
+<summary><strong>Qwen Code 安装</strong></summary>
+
+对于 Qwen Code，直接从 fork 仓库安装：
+
+```bash
+# 一键安装（全局）
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --global && rm -rf gsd-qwen-temp
+
+# 一键安装（本地，当前项目）
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --local && rm -rf gsd-qwen-temp
+
+# 或者手动 git clone
+git clone --depth 1 https://github.com/DuaneChen520/get-shit-done-qwen.git
+cd get-shit-done-qwen
+node bin/install-qwen-unified.js --global  # 或 --local
+```
+
+> [!NOTE]
+> Qwen Code 版本作为 fork 维护在 `github.com/DuaneChen520/get-shit-done-qwen`。尚未作为独立的 npm 包发布。
 
 </details>
 

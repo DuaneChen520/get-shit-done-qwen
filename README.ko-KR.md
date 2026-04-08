@@ -163,16 +163,35 @@ npx get-shit-done-cc --trae --local         # ./.trae/에 설치
 npx get-shit-done-cc --cline --global       # ~/.cline/에 설치
 npx get-shit-done-cc --cline --local        # ./.clinerules에 설치
 
-# Qwen Code
-npx get-shit-done-cc --qwen --global        # ~/.qwen/에 설치
-npx get-shit-done-cc --qwen --local         # ./.qwen/에 설치
-
 # 전체 런타임
 npx get-shit-done-cc --all --global      # 모든 디렉터리에 설치
 ```
 
 위치 프롬프트 건너뛰기: `--global` (`-g`) 또는 `--local` (`-l`).
-런타임 프롬프트 건너뛰기: `--claude`, `--opencode`, `--gemini`, `--kilo`, `--codex`, `--copilot`, `--cursor`, `--windsurf`, `--antigravity`, `--augment`, `--trae`, `--cline`, `--qwen`, 또는 `--all`.
+런타임 프롬프트 건너뛰기: `--claude`, `--opencode`, `--gemini`, `--kilo`, `--codex`, `--copilot`, `--cursor`, `--windsurf`, `--antigravity`, `--augment`, `--trae`, `--cline`, 또는 `--all`.
+
+</details>
+
+<details>
+<summary><strong>Qwen Code 설치</strong></summary>
+
+Qwen Code 의 경우 포크된 저장소에서 직접 설치합니다:
+
+```bash
+# 원라인 설치 (글로벌)
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --global && rm -rf gsd-qwen-temp
+
+# 원라인 설치 (로컬, 현재 프로젝트)
+npx --yes degit DuaneChen520/get-shit-done-qwen#main gsd-qwen-temp && node gsd-qwen-temp/bin/install-qwen-unified.js --local && rm -rf gsd-qwen-temp
+
+# 또는 수동으로 git clone
+git clone --depth 1 https://github.com/DuaneChen520/get-shit-done-qwen.git
+cd get-shit-done-qwen
+node bin/install-qwen-unified.js --global  # 또는 --local
+```
+
+> [!NOTE]
+> Qwen Code 버전은 `github.com/DuaneChen520/get-shit-done-qwen`에서 fork 로 유지보수 중입니다. 별도의 npm 패키지로 아직 배포되지 않았습니다.
 
 </details>
 
